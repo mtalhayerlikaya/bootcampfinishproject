@@ -30,7 +30,12 @@ class DetailFragment : Fragment() {
     private var quantity:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("detail oncreate")
+    }
 
+    override fun onResume() {
+        super.onResume()
+        setLikedItemsVisible()
     }
 
     override fun onCreateView(
@@ -47,15 +52,15 @@ class DetailFragment : Fragment() {
 
         handleLikeRequest()
         setLikedItemsVisible()
-
+        println("detail onViewCreated")
 
         return binding.root
     }
 
     fun setLikedItemsVisible(){
-        if( Singleton.likedFoodsFoodsSingleton != null ){
+        if( Singleton.likedFoodsSingleton != null ){
 
-            if(Singleton.likedFoodsFoodsSingleton!!.contains(yemek)){
+            if(Singleton.likedFoodsSingleton!!.contains(yemek)){
                 binding.detailsLikeButton.setImageResource(R.drawable.like)
             }else{
                 binding.detailsLikeButton.setImageResource(R.drawable.dislike)
@@ -67,13 +72,13 @@ class DetailFragment : Fragment() {
         val likedItems = AddLikedItemRequest("ecykka",yemek.yemek_adi)
 
         binding.detailsLikeButton.setOnClickListener {
-            if( Singleton.likedFoodsFoodsSingleton != null ){
+            if( Singleton.likedFoodsSingleton != null ){
                 viewModel.addLikedItems(likedItems)
-                if(Singleton.likedFoodsFoodsSingleton!!.contains(yemek)){
+                if(Singleton.likedFoodsSingleton!!.contains(yemek)){
                     it.detailsLikeButton.setImageResource(R.drawable.dislike)
-                    Singleton.likedFoodsFoodsSingleton!!.remove(yemek)
+                    Singleton.likedFoodsSingleton!!.remove(yemek)
                 }else{
-                    Singleton.likedFoodsFoodsSingleton!!.add(yemek)
+                    Singleton.likedFoodsSingleton!!.add(yemek)
                     it.detailsLikeButton.setImageResource(R.drawable.like)
                 }
             }

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         handleBottomNavBar()
 
-        Singleton.likedFoodsFoodsSingleton = ArrayList<Yemek>()
+        Singleton.likedFoodsSingleton = ArrayList<Yemek>()
 
         /*scope.launch {
             getItem()

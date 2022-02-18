@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: AnasayfaViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        println("home oncreate")
     }
 
     override fun onCreateView(
@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
         scope.launch {
             getData()
         }
+        println("home onViewCreated")
         subscribeToObserver()
     }
 
@@ -82,11 +83,12 @@ class HomeFragment : Fragment() {
         val like = GetLikedItemsRequest("ecykka")
         val response = retrofit.getLikedItems(like)
         if(response.isSuccessful){
+            Singleton.likedFoodsSingleton?.clear()
             response.body()?.let {
                 it.message.forEach {likedItem->
                     Singleton.allFoodsSingleton!!.forEach {food->
                         if(food.yemek_adi == likedItem){
-                            Singleton.likedFoodsFoodsSingleton?.add(food)
+                            Singleton.likedFoodsSingleton?.add(food)
                         }
                     }
                 }
