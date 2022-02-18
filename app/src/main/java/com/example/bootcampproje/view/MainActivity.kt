@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
             getItem()
         }*/
 
+
+
     }
 
     suspend fun getItem(){
@@ -71,22 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    suspend fun getData(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(URL.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(RetrofitApi::class.java)
 
-        val response = retrofit.getFoodOnBasket("mtalhayerlikaya")
-        if(response.isSuccessful){
-            response.body()?.let {
-                it.sepet_yemekler.forEach {
-                    println(it)
-                }
-            }
-        }
-    }
 
 
 

@@ -11,14 +11,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootcampproje.R
 import com.example.bootcampproje.adapter.HomeRecyclerViewAdapter
+import com.example.bootcampproje.api.LikedDaoInterface
 import com.example.bootcampproje.databinding.FragmentHomeBinding
 import com.example.bootcampproje.model.GetLikedItemsRequest
 import com.example.bootcampproje.util.Singleton
+import com.example.bootcampproje.util.URL
 import com.example.bootcampproje.viewmodel.AnasayfaViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class HomeFragment : Fragment() {
@@ -43,7 +47,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(AnasayfaViewModel::class.java)
-
+        scope.launch {
+            getData()
+        }
         subscribeToObserver()
     }
 
@@ -65,6 +71,27 @@ class HomeFragment : Fragment() {
             }
 
         })
+    }
+
+    suspend fun getData(){
+        val retrofit = Retrofit.Builder()
+            .baseUrl(URL.LIKED_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(LikedDaoInterface::class.java)
+        val like = GetLikedItemsRequest("ecykka")
+        val response = retrofit.getLikedItems(like)
+        if(response.isSuccessful){
+            response.body()?.let {
+                it.message.forEach {likedItem->
+                    Singleton.allFoodsSingleton!!.forEach {food->
+                        if(food.yemek_adi == likedItem){
+                            Singleton.likedFoodsFoodsSingleton?.add(food)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
