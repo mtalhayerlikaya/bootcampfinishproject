@@ -14,8 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.bootcampproje.R
 import com.example.bootcampproje.databinding.FragmentDetailBinding
+import com.example.bootcampproje.model.AddLikedItemRequest
 import com.example.bootcampproje.model.Yemek
 import com.example.bootcampproje.model.YemekEkle
+import com.example.bootcampproje.util.Singleton
 import com.example.bootcampproje.viewmodel.AnasayfaViewModel
 import com.example.bootcampproje.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.view.*
@@ -43,13 +45,42 @@ class DetailFragment : Fragment() {
         binding.yemek = yemek
         setDetailImage(yemek)
 
-
-
-
+        handleLikeRequest()
+        setLikedItemsVisible()
 
 
         return binding.root
     }
+
+    fun setLikedItemsVisible(){
+        if( Singleton.likedFoodsFoodsSingleton != null ){
+
+            if(Singleton.likedFoodsFoodsSingleton!!.contains(yemek)){
+                binding.detailsLikeButton.setImageResource(R.drawable.like)
+            }else{
+                binding.detailsLikeButton.setImageResource(R.drawable.dislike)
+            }
+        }
+    }
+
+    fun handleLikeRequest(){
+        val likedItems = AddLikedItemRequest("ecykka",yemek.yemek_adi)
+
+        binding.detailsLikeButton.setOnClickListener {
+            if( Singleton.likedFoodsFoodsSingleton != null ){
+                viewModel.addLikedItems(likedItems)
+                if(Singleton.likedFoodsFoodsSingleton!!.contains(yemek)){
+                    it.detailsLikeButton.setImageResource(R.drawable.dislike)
+                    Singleton.likedFoodsFoodsSingleton!!.remove(yemek)
+                }else{
+                    Singleton.likedFoodsFoodsSingleton!!.add(yemek)
+                    it.detailsLikeButton.setImageResource(R.drawable.like)
+                }
+            }
+
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,7 +99,7 @@ class DetailFragment : Fragment() {
                         quantity,"mtalhayerlikaya")
                     //println("geri geldin")
                    // println(addToBasket)
-                    viewModel.addTobasket(addToBasket)
+                    if(quantity>0) viewModel.addTobasket(addToBasket)
                     quantity=0
                     findNavController().popBackStack()
                 }

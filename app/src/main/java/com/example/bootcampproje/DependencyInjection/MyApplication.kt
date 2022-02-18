@@ -13,6 +13,7 @@ import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -22,6 +23,18 @@ object MyApplication : Application()  {
     @Singleton
     @Provides
     fun provideAnalyticsService(
+    ): RetrofitApi {
+        return Retrofit.Builder()
+            .baseUrl(URL.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RetrofitApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    @Named("likedService")
+    fun likeItemsService(
     ): RetrofitApi {
         return Retrofit.Builder()
             .baseUrl(URL.BASE_URL)

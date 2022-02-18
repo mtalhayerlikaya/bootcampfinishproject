@@ -12,11 +12,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootcampproje.R
 import com.example.bootcampproje.adapter.HomeRecyclerViewAdapter
 import com.example.bootcampproje.databinding.FragmentHomeBinding
+import com.example.bootcampproje.model.GetLikedItemsRequest
+import com.example.bootcampproje.util.Singleton
 import com.example.bootcampproje.viewmodel.AnasayfaViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
-
+    val scope = CoroutineScope(Dispatchers.IO+ Job())
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: AnasayfaViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +44,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(AnasayfaViewModel::class.java)
 
-       subscribeToObserver()
+        subscribeToObserver()
     }
+
+
 
     fun subscribeToObserver() {
         viewModel.yemeklerLiveData.observe(viewLifecycleOwner, Observer {
             if (!it.yemekler.isEmpty()) {
-                val recyclerViewAdapter = HomeRecyclerViewAdapter(requireContext(),it.yemekler)
+                Singleton.allFoodsSingleton = it.yemekler
+                val recyclerViewAdapter = HomeRecyclerViewAdapter(requireContext(),it.yemekler,viewModel)
                 binding.rv.adapter = recyclerViewAdapter
                 binding.rv.layoutManager = GridLayoutManager(requireContext(),2,
                     GridLayoutManager.VERTICAL,false)

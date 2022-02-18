@@ -9,8 +9,15 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.bootcampproje.R
+import com.example.bootcampproje.api.LikedDaoInterface
 import com.example.bootcampproje.api.RetrofitApi
+import com.example.bootcampproje.model.AddLikedItemRequest
+import com.example.bootcampproje.model.GetLikedItemsRequest
+import com.example.bootcampproje.model.Yemek
+import com.example.bootcampproje.model.Yemekler
+import com.example.bootcampproje.util.Singleton
 import com.example.bootcampproje.util.URL
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,25 +43,31 @@ class MainActivity : AppCompatActivity() {
 
         handleBottomNavBar()
 
+        Singleton.likedFoodsFoodsSingleton = ArrayList<Yemek>()
+
+        /*scope.launch {
+            getItem()
+        }*/
+
+    }
+
+    suspend fun getItem(){
         val retrofit = Retrofit.Builder()
-            .baseUrl(URL.BASE_URL)
+            .baseUrl(URL.LIKED_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(RetrofitApi::class.java)
+            .create(LikedDaoInterface::class.java)
 
-        /*scope.launch {
-            retrofit.sendAddRequest("Baklava","baklava.png",3,3,"mtalhayerlikaya")
+        val like = AddLikedItemRequest("ecykka","kivi")
+       // val like = GetLikedItemsRequest("ecykka")
 
-        }*/
-        /*scope.launch {
-            retrofit.getFoodOnBasket("mtalhayerlikaya")
-
-        }
-        scope.launch {
-            getData()
-        }
-
-*/
+            //val response =  retrofit.getLikedItems(like)
+              val response =  retrofit.addLikedItems(like)
+            if(response.isSuccessful){
+                response.body()?.let {
+                    println(it)
+                }
+            }
 
     }
 

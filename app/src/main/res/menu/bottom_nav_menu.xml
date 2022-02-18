@@ -10,11 +10,19 @@
     </item>
 
     <item
+        android:id="@+id/likeFragment"
+        android:title="Like"
+        android:icon="@drawable/dislike"
+        >
+    </item>
+
+    <item
         android:id="@+id/basketFragment"
         android:title="Basket"
         android:icon="@drawable/basket"
         >
     </item>
+
 
 
 </menu>

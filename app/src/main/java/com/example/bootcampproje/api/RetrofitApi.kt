@@ -1,9 +1,6 @@
 package com.example.bootcampproje.api
 
-import com.example.bootcampproje.model.YemekAlRequest
-import com.example.bootcampproje.model.YemekAlResponse
-import com.example.bootcampproje.model.YemekEkle
-import com.example.bootcampproje.model.Yemekler
+import com.example.bootcampproje.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -30,5 +27,11 @@ interface RetrofitApi {
     @FormUrlEncoded
     @POST("yemekler/sepettekiYemekleriGetir.php")
     suspend fun getFoodOnBasket(@Field("kullanici_adi") kullanici_adi:String): Response<YemekAlResponse>
+
+    @FormUrlEncoded
+    @POST("yemekler/sepettenYemekSil.php")
+    suspend fun deleteRequest(@Field("kullanici_adi") kullanici_adi:String,
+                              @Field("sepet_yemek_id") sepet_yemek_id:Int)
+
 
 }

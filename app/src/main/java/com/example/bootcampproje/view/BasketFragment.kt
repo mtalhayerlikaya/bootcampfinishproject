@@ -1,5 +1,6 @@
 package com.example.bootcampproje.view
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bootcampproje.R
 import com.example.bootcampproje.adapter.BasketRecyclerViewAdapter
 import com.example.bootcampproje.databinding.FragmentBasketBinding
@@ -18,19 +21,18 @@ import com.example.bootcampproje.model.Yemek
 import com.example.bootcampproje.repo.BasketFragmentRepo
 import com.example.bootcampproje.viewmodel.BasketViewModel
 import com.example.bootcampproje.viewmodel.DetailViewModel
+import kotlinx.android.synthetic.main.fragment_basket.view.*
 import javax.inject.Inject
 
 
 class BasketFragment : Fragment() {
     private lateinit var binding: FragmentBasketBinding
     private lateinit var viewModel: BasketViewModel
-
+    private lateinit var adapter : BasketRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*val tempViewModel: BasketViewModel by viewModels(){
-            BasketFragmentRepo()
-        }
+      /*  val tempViewModel: BasketViewModel by viewModels()
         viewModel = tempViewModel*/
     }
 
@@ -52,11 +54,30 @@ class BasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(BasketViewModel::class.java)
+        //adapter = BasketRecyclerViewAdapter(requireContext(), mutableListOf(),viewModel)
+        val itemSwipe = object:ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
 
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+               // viewModel.deleteFood(viewHolder.itemView.)
+
+                val position = viewHolder.adapterPosition
+                adapter.remove(position)
+
+            }
+
+        }
+        val swap = ItemTouchHelper(itemSwipe)
+        swap.attachToRecyclerView(binding.recyclerView)
 
         registerToObserver()
-
-    }
+     }
 
     private fun listenBasketItems(){
 
@@ -73,43 +94,31 @@ class BasketFragment : Fragment() {
         }*/
     }
 
-    fun checkIfExistInBasket(list:List<SepetYemek>):List<SepetYemek>{
-        var hashMap = hashMapOf<String,SepetYemek>()
-        var foodStrList = mutableListOf<String>()
 
-        list.forEach {
-            foodStrList.add(it.yemek_adi)
-        }
+    fun calculateBasket(){
 
-        foodStrList.forEachIndexed{ index, element->
-            hashMap[element] = list[index].copy(list[index].sepet_yemek_id,
-                list[index].yemek_adi,
-                list[index].yemek_resim_adi,
-                list[index].yemek_fiyat,
-                0,
-                list[index].kullanici_adi)
-        }
-
-        foodStrList.forEachIndexed{ index, element->
-            hashMap[element]!!.yemek_siparis_adet += list[index].yemek_siparis_adet
-        }
-
-        return hashMap.values.toList()
     }
 
-    fun registerToObserver(){
-        viewModel.basList.observe(viewLifecycleOwner, Observer{
-            if(!it.sepet_yemekler.isEmpty()){
-                val listOnBasket = checkIfExistInBasket(it.sepet_yemekler)
-                val adapter =BasketRecyclerViewAdapter(requireContext(),listOnBasket)
-                binding.recyclerView.adapter = adapter
-                binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-            }else{
-                println("basket is empty")
-            }
+   private fun registerToObserver() {
 
-        })
+           viewModel.basList.observe(viewLifecycleOwner, Observer {
+
+                        val listOnBasket = viewModel.checkIfExistInBasket(it.sepet_yemekler)
+                        adapter = BasketRecyclerViewAdapter(requireContext(),
+                            listOnBasket,viewModel)
+                        binding.recyclerView.adapter = adapter
+                        binding.recyclerView.layoutManager =
+                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+
+           })
+
+   }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
-
 
 }

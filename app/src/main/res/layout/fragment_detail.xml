@@ -168,12 +168,12 @@
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/detailsLikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="25dp"
-                android:src="@drawable/outline_favorite_border_detail"
+                android:src="@drawable/dislike"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

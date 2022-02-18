@@ -6,14 +6,16 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
-import com.example.bootcampproje.R
 import com.example.bootcampproje.databinding.HomeRecyclerViewItemBinding
+import com.example.bootcampproje.model.AddLikedItemRequest
+import com.example.bootcampproje.model.GetLikedItemsRequest
 import com.example.bootcampproje.model.Yemek
 import com.example.bootcampproje.view.HomeFragmentDirections
-import javax.inject.Inject
+import com.example.bootcampproje.viewmodel.AnasayfaViewModel
 
-class HomeRecyclerViewAdapter(var mContext: Context, var list:List<Yemek>): RecyclerView.Adapter<HomeRecyclerViewAdapter.HomeViewHolder>() {
+class HomeRecyclerViewAdapter(var mContext: Context, var list:List<Yemek>,
+val viewModel:AnasayfaViewModel
+): RecyclerView.Adapter<HomeRecyclerViewAdapter.HomeViewHolder>() {
 
     class HomeViewHolder(recyclerViewItemBinding: HomeRecyclerViewItemBinding): RecyclerView.ViewHolder(recyclerViewItemBinding.root) {
         var recyclerViewItemBinding:HomeRecyclerViewItemBinding
@@ -44,6 +46,11 @@ class HomeRecyclerViewAdapter(var mContext: Context, var list:List<Yemek>): Recy
             val info = HomeFragmentDirections.actionHomeFragmentToDetayFragment(list[position])
             Navigation.findNavController(it).navigate(info)
         }
+
+       /* a.favImage.setOnClickListener {
+            val like = AddLikedItemRequest("eckka",list[position].yemek_adi)
+            viewModel.addLikedItems(like)
+        }*/
 
 
     }

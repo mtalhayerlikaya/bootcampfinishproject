@@ -27,4 +27,9 @@
         android:name="com.example.bootcampproje.view.BasketFragment"
         android:label="fragment_basket"
         tools:layout="@layout/fragment_basket" />
+    <fragment
+        android:id="@+id/likeFragment"
+        android:name="com.example.bootcampproje.view.LikeFragment"
+        android:label="fragment_like"
+        tools:layout="@layout/fragment_like" />
 </navigation>

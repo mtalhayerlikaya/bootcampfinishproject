@@ -1,14 +1,17 @@
 package com.example.bootcampproje.adapter
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.bootcampproje.databinding.RecyclerviewBasketItemBinding
 import com.example.bootcampproje.model.SepetYemek
 import com.example.bootcampproje.model.Yemek
+import com.example.bootcampproje.viewmodel.BasketViewModel
 
-class BasketRecyclerViewAdapter(var mContext: Context,var list:List<SepetYemek>): RecyclerView.Adapter<BasketRecyclerViewAdapter.BasketViewHolder>() {
+class BasketRecyclerViewAdapter(var mContext: Context,var list:MutableList<SepetYemek>,var viewModel:BasketViewModel): RecyclerView.Adapter<BasketRecyclerViewAdapter.BasketViewHolder>() {
     class BasketViewHolder(recyclerviewBasketItemBinding: RecyclerviewBasketItemBinding):RecyclerView.ViewHolder(recyclerviewBasketItemBinding.root){
         var recyclerviewBasketItemBinding:RecyclerviewBasketItemBinding
 
@@ -18,6 +21,16 @@ class BasketRecyclerViewAdapter(var mContext: Context,var list:List<SepetYemek>)
 
     }
 
+    fun remove( position: Int){
+        val yemek = list[position].yemek_adi
+        viewModel.deleteFood(list[position].kullanici_adi,list[position].sepet_yemek_id.toInt())
+        list = viewModel.checkIfExistInBasket(list)
+        //val el = list[position]
+        list.remove(list.first { it.yemek_adi == yemek })
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketViewHolder {
         val binding = RecyclerviewBasketItemBinding.inflate(LayoutInflater.from(mContext),parent,false)
         return BasketViewHolder(binding)
@@ -25,21 +38,26 @@ class BasketRecyclerViewAdapter(var mContext: Context,var list:List<SepetYemek>)
 
     override fun onBindViewHolder(holder: BasketViewHolder, position: Int) {
         val a = holder.recyclerviewBasketItemBinding
-        holder.recyclerviewBasketItemBinding.basketFoodName.text =list[position].yemek_adi
-        holder.recyclerviewBasketItemBinding.basketFoodPrice.text =list[position].yemek_fiyat.toString()
-        holder.recyclerviewBasketItemBinding.basketFoodCount.text = list[position].yemek_siparis_adet.toString()
 
-        /*holder.recyclerviewBasketItemBinding.increaseBasketItem.setOnClickListener {
-            var quantity = a.basketFoodCount.text.toString().toInt() + 1
-            a.basketFoodCount.setText(quantity.toString())
-        }
+        a.basketFoodName.text =list[position].yemek_adi
+        a.basketFoodPrice.text ="₺"+list[position].yemek_fiyat.toString()
+        a.basketFoodCount.text = list[position].yemek_siparis_adet.toString()
+        Glide
+            .with(mContext)
+            .load("http://kasimadalan.pe.hu/yemekler/resimler/${list[position].yemek_resim_adi}")
+            .centerCrop()
+            .into(a.foodImage)
 
-        holder.recyclerviewBasketItemBinding.decreaseImageView.setOnClickListener {
-            if(quantity>0){
-                quantity -= 1
-                binding.quantityTextView.setText(quantity.toString())
-            }
-        }*/
+         /*  a.increaseBasketItem.setOnClickListener {
+               val quantity = list[position].yemek_siparis_adet+1
+               a.basketFoodCount.text =quantity.toString()
+               //viewModel.addTobasket()
+           }
+           a.decreaseBasketItem.setOnClickListener {
+               val quantity = list[position].yemek_siparis_adet-1
+               a.basketFoodCount.text =quantity.toString()
+           }*/
+
 
     }
 
