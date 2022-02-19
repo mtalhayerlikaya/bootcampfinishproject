@@ -12,6 +12,13 @@ class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
+
+        fun loginAndSignUp(baseUrl:String) : Retrofit {
+            return Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
     }
 
 }

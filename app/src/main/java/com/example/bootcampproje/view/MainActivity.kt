@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun handleBottomNavBar(){
-        //bottom_navigation_menu.visibility = View.GONE
+        bottomNavigationView.visibility = View.GONE
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(object : FragmentManager.FragmentLifecycleCallbacks() {
 
@@ -93,6 +93,8 @@ class MainActivity : AppCompatActivity() {
                 when (f) {
                     is BasketFragment -> bottomNavigationView.visibility = View.GONE
                     is DetailFragment->bottomNavigationView.visibility = View.GONE
+                    //is LoginFragment->bottomNavigationView.visibility = View.GONE
+                   // is SignUpFragment->bottomNavigationView.visibility = View.GONE
                     else -> bottomNavigationView.visibility = View.VISIBLE
 
                 }
