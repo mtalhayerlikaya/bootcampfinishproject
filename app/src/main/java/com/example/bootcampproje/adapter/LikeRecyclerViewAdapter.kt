@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.bootcampproje.databinding.RecyclerviewLikedItemBinding
 import com.example.bootcampproje.model.Yemek
 
@@ -22,8 +23,15 @@ class LikeRecyclerViewAdapter(var mContext: Context, var list:List<Yemek>) : Rec
     }
 
     override fun onBindViewHolder(holder: LikeViewHolder, position: Int) {
+         val yemek = holder.recyclerviewLikedItemBinding
           holder.recyclerviewLikedItemBinding.likeRvItemFoodName.text = list.get(position).yemek_adi
           holder.recyclerviewLikedItemBinding.likeRvItemFoodPrice.text = "₺"+list.get(position).yemek_fiyat.toString()
+
+        Glide
+            .with(mContext)
+            .load("http://kasimadalan.pe.hu/yemekler/resimler/${list[position].yemek_resim_adi}")
+            .centerCrop()
+            .into(yemek.likeRvItemImage)
     }
 
     override fun getItemCount(): Int {

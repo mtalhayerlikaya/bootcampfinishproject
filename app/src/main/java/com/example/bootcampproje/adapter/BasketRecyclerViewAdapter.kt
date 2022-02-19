@@ -64,4 +64,11 @@ class BasketRecyclerViewAdapter(var mContext: Context,var list:MutableList<Sepet
     override fun getItemCount(): Int {
         return list.size
     }
+
+   fun updateData() {
+        list.clear()
+        list.addAll(list)
+        notifyDataSetChanged()
+    }
+
 }

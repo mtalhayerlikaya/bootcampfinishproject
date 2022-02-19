@@ -32,6 +32,7 @@ class BasketFragment : Fragment() {
     private lateinit var viewModel: BasketViewModel
     private lateinit var adapter : BasketRecyclerViewAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
       /*  val tempViewModel: BasketViewModel by viewModels()
@@ -56,7 +57,7 @@ class BasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(BasketViewModel::class.java)
-        //adapter = BasketRecyclerViewAdapter(requireContext(), mutableListOf(),viewModel)
+
         val itemSwipe = object:ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -86,6 +87,9 @@ class BasketFragment : Fragment() {
 
         })
 
+
+
+
         registerToObserver()
      }
 
@@ -112,8 +116,13 @@ class BasketFragment : Fragment() {
    private fun registerToObserver() {
 
            viewModel.basList.observe(viewLifecycleOwner, Observer {
-
+                        var basketAmount:Int = 0
                         val listOnBasket = viewModel.checkIfExistInBasket(it.sepet_yemekler)
+                        listOnBasket.forEach {
+                            basketAmount += it.yemek_fiyat * it.yemek_siparis_adet
+                        }
+                       binding.total.text = basketAmount.toString()
+                       binding.subtotal.text = basketAmount.toString()
                         adapter = BasketRecyclerViewAdapter(requireContext(),
                             listOnBasket,viewModel)
                         binding.recyclerView.adapter = adapter

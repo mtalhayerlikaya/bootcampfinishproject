@@ -54,7 +54,7 @@ class LikeFragment : Fragment() {
             val adapter = LikeRecyclerViewAdapter(requireContext(), likedFoodsSingleton!!)
             binding.rvLikeFragment.adapter = adapter
             binding.rvLikeFragment.layoutManager = GridLayoutManager(requireContext()
-                ,3,
+                ,2,
             GridLayoutManager.VERTICAL,false)
          }
 
