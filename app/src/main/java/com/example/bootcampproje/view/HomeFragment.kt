@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -51,6 +52,13 @@ class HomeFragment : Fragment() {
             getData()
         }
         println("home onViewCreated")
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object:
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+
+        })
         subscribeToObserver()
     }
 
@@ -80,7 +88,7 @@ class HomeFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(LikedDaoInterface::class.java)
-        val like = GetLikedItemsRequest("ecykka")
+        val like = GetLikedItemsRequest(Singleton.singletonUsername!!)
         val response = retrofit.getLikedItems(like)
         if(response.isSuccessful){
             Singleton.likedFoodsSingleton?.clear()

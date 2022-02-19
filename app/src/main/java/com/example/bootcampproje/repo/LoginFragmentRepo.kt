@@ -13,11 +13,11 @@ constructor(){
 
     private var loginDao = ApiUtils.getInterfaceLoginAndSignUp()
 
-    val loginRepoLivedata = MutableLiveData<LoginResponse>()
+    val loginRepoLivedata = MutableLiveData<LoginResponse?>()
 
 
 
-    fun returnLiveData(): MutableLiveData<LoginResponse> {
+    fun returnLiveData(): MutableLiveData<LoginResponse?> {
         return loginRepoLivedata
     }
 

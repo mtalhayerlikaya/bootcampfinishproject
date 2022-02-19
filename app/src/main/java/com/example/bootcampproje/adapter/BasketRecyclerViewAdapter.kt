@@ -23,7 +23,7 @@ class BasketRecyclerViewAdapter(var mContext: Context,var list:MutableList<Sepet
 
     fun remove( position: Int){
         val yemek = list[position].yemek_adi
-        viewModel.deleteFood(list[position].kullanici_adi,list[position].sepet_yemek_id.toInt())
+        viewModel.deleteFood(list[position].sepet_yemek_id.toInt())
         list = viewModel.checkIfExistInBasket(list)
         //val el = list[position]
         list.remove(list.first { it.yemek_adi == yemek })

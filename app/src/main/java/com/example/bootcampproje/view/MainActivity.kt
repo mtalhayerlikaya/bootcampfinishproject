@@ -91,10 +91,10 @@ class MainActivity : AppCompatActivity() {
                 super.onFragmentViewCreated(fm, f, v, savedInstanceState)
 
                 when (f) {
-                    is BasketFragment -> bottomNavigationView.visibility = View.GONE
+                    //is BasketFragment -> bottomNavigationView.visibility = View.GONE
                     is DetailFragment->bottomNavigationView.visibility = View.GONE
-                    //is LoginFragment->bottomNavigationView.visibility = View.GONE
-                   // is SignUpFragment->bottomNavigationView.visibility = View.GONE
+                    is LoginFragment->bottomNavigationView.visibility = View.GONE
+                    is SignUpFragment->bottomNavigationView.visibility = View.GONE
                     else -> bottomNavigationView.visibility = View.VISIBLE
 
                 }

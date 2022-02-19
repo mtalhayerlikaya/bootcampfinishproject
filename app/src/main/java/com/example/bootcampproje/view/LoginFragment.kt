@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import com.example.bootcampproje.R
 import com.example.bootcampproje.databinding.FragmentLoginBinding
 import com.example.bootcampproje.model.LoginRequest
+import com.example.bootcampproje.util.Singleton
 import com.example.bootcampproje.viewmodel.AnasayfaViewModel
 import com.example.bootcampproje.viewmodel.LoginFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -39,10 +40,15 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(LoginFragmentViewModel::class.java)
 
+        binding.goSignUpPage.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_signUpFragment)
+        }
+
         loginButton.setOnClickListener {
             val name = binding.usernameText.text.toString()
             val pass = binding.passwordText.text.toString()
             val req = LoginRequest(name,pass)
+            Singleton.singletonUsername = name
             println(req)
             viewModel.loadRepoLiveData(req)
         }
@@ -51,15 +57,18 @@ class LoginFragment : Fragment() {
 
     private fun registerToObserver(){
         viewModel.loginLiveData.observe(viewLifecycleOwner, Observer {
-            when(it.success){
+            when(it?.success){
 
                 0->{
-                 Snackbar.make(requireView(),it.message,Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),it.message,Snackbar.LENGTH_SHORT).show()
+                    viewModel.clearResponse()
                 }
 
                 1->{
                     Snackbar.make(requireView(),it.message,Snackbar.LENGTH_SHORT).show()
                     Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                    viewModel.clearResponse()
+                    //onDestroy()
                 }
 
             }

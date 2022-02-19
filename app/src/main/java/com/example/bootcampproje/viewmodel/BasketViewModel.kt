@@ -9,6 +9,7 @@ import com.example.bootcampproje.model.YemekAlResponse
 import com.example.bootcampproje.model.YemekEkle
 import com.example.bootcampproje.model.Yemekler
 import com.example.bootcampproje.repo.BasketFragmentRepo
+import com.example.bootcampproje.util.Singleton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,11 +33,11 @@ constructor(val repo:BasketFragmentRepo):ViewModel(){
     }
 
     fun loadBasketList()=viewModelScope.launch{
-        repo.getDataFromServer("mtalhayerlikaya")
+        repo.getDataFromServer()
     }
 
-    fun deleteFood(k_adi:String,yemek_sep_id:Int)=viewModelScope.launch{
-        repo.deleteFood(k_adi,yemek_sep_id)
+    fun deleteFood(yemek_sep_id:Int)=viewModelScope.launch{
+        repo.deleteFood(yemek_sep_id)
     }
 
     fun checkIfExistInBasket(list:List<SepetYemek>):MutableList<SepetYemek>{

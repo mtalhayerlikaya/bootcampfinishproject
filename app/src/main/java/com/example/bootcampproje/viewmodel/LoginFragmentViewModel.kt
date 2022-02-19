@@ -15,8 +15,8 @@ class LoginFragmentViewModel
 @Inject
 constructor(val repo: LoginFragmentRepo): ViewModel() {
 
-    private var loginLiveData_ = MutableLiveData<LoginResponse>()
-    val loginLiveData : LiveData<LoginResponse>
+    private var loginLiveData_ = MutableLiveData<LoginResponse?>()
+    val loginLiveData : LiveData<LoginResponse?>
         get() = loginLiveData_
 
     init {
@@ -25,6 +25,10 @@ constructor(val repo: LoginFragmentRepo): ViewModel() {
 
     fun loadRepoLiveData(req:LoginRequest)=viewModelScope.launch{
         repo.sendLoginReq(req)
+    }
+
+    fun clearResponse(){
+        loginLiveData_.value= null
     }
 
 }

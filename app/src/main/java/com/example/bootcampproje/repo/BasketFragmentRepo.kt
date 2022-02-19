@@ -5,12 +5,13 @@ import com.example.bootcampproje.api.RetrofitApi
 import com.example.bootcampproje.model.YemekAlResponse
 import com.example.bootcampproje.model.YemekEkle
 import com.example.bootcampproje.model.Yemekler
+import com.example.bootcampproje.util.Singleton
 import javax.inject.Inject
 
 class BasketFragmentRepo
 @Inject
 constructor(val api:RetrofitApi) {
-
+    var a = Singleton.singletonUsername
     private var basketList = MutableLiveData<YemekAlResponse>()
 
     fun returnBasketList(): MutableLiveData<YemekAlResponse> {
@@ -23,12 +24,13 @@ constructor(val api:RetrofitApi) {
             yemek.yemek_fiyat,yemek.yemek_siparis_adet,yemek.kullanici_adi)
     }
 
-    suspend fun deleteFood(k_adi:String,yemek_sep_id:Int){
-        api.deleteRequest(k_adi,yemek_sep_id)
+    suspend fun deleteFood(yemek_sep_id:Int){
+
+        api.deleteRequest(Singleton.singletonUsername!!,yemek_sep_id)
     }
 
-    suspend fun getDataFromServer(kullanici_adi:String){
-        val response = api.getFoodOnBasket(kullanici_adi)
+    suspend fun getDataFromServer(){
+        val response = api.getFoodOnBasket(Singleton.singletonUsername!!)
 
         try {
             if(response.isSuccessful){

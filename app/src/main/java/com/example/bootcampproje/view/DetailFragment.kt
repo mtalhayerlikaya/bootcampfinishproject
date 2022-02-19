@@ -69,7 +69,7 @@ class DetailFragment : Fragment() {
     }
 
     fun handleLikeRequest(){
-        val likedItems = AddLikedItemRequest("ecykka",yemek.yemek_adi)
+        val likedItems = AddLikedItemRequest(Singleton.singletonUsername!!,yemek.yemek_adi)
 
         binding.detailsLikeButton.setOnClickListener {
             if( Singleton.likedFoodsSingleton != null ){
@@ -93,7 +93,7 @@ class DetailFragment : Fragment() {
         listenButtons()
         val addToBasket= YemekEkle(yemek.yemek_adi,
             yemek.yemek_resim_adi,yemek.yemek_fiyat,
-            quantity,"mtalhayerlikaya")
+            quantity,Singleton.singletonUsername!!)
 
         requireActivity()
             .onBackPressedDispatcher
@@ -101,7 +101,7 @@ class DetailFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     val addToBasket= YemekEkle(yemek.yemek_adi,
                         yemek.yemek_resim_adi,yemek.yemek_fiyat,
-                        quantity,"mtalhayerlikaya")
+                        quantity,Singleton.singletonUsername!!)
                     //println("geri geldin")
                    // println(addToBasket)
                     if(quantity>0) viewModel.addTobasket(addToBasket)
