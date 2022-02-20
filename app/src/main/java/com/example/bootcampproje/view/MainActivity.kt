@@ -45,34 +45,11 @@ class MainActivity : AppCompatActivity() {
 
         Singleton.likedFoodsSingleton = ArrayList<Yemek>()
 
-        /*scope.launch {
-            getItem()
-        }*/
+
 
 
 
     }
-
-    suspend fun getItem(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(URL.LIKED_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(LikedDaoInterface::class.java)
-
-        val like = AddLikedItemRequest("ecykka","kivi")
-       // val like = GetLikedItemsRequest("ecykka")
-
-            //val response =  retrofit.getLikedItems(like)
-              val response =  retrofit.addLikedItems(like)
-            if(response.isSuccessful){
-                response.body()?.let {
-                    println(it)
-                }
-            }
-
-    }
-
 
 
 

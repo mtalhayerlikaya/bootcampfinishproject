@@ -32,7 +32,6 @@ class LikeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("like oncreate")
     }
 
     override fun onCreateView(
@@ -48,7 +47,7 @@ class LikeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(LikeViewModel::class.java)
-        println("like onViewCreated")
+
         println(Singleton.likedFoodsSingleton)
         likedFoodsSingleton?.let {
             val adapter = LikeRecyclerViewAdapter(requireContext(), likedFoodsSingleton!!)
@@ -58,24 +57,7 @@ class LikeFragment : Fragment() {
             GridLayoutManager.VERTICAL,false)
          }
 
-   /*     viewModel.likedList.observe(viewLifecycleOwner, Observer {
 
-            when(it.success){
-
-                1->{
-                    it.message.forEach {
-                        println(it)
-                    }
-                }
-
-                0->{
-
-                }
-
-            }
-
-        })
-*/
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object:
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

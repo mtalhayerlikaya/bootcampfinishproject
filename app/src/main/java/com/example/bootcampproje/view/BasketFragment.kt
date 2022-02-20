@@ -35,8 +35,7 @@ class BasketFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-      /*  val tempViewModel: BasketViewModel by viewModels()
-        viewModel = tempViewModel*/
+
     }
 
     override fun onResume() {
@@ -68,7 +67,7 @@ class BasketFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-               // viewModel.deleteFood(viewHolder.itemView.)
+
 
                 val position = viewHolder.adapterPosition
                 adapter.remove(position)
@@ -82,36 +81,14 @@ class BasketFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object:
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-               // findNavController().navigate(R.id.ba)
+
             }
 
         })
 
-
-
-
         registerToObserver()
      }
 
-    private fun listenBasketItems(){
-
-    /*    binding..setOnClickListener {
-            quantity += 1
-            binding.quantityTextView.setText(quantity.toString())
-        }
-
-        binding.decreaseImageView.setOnClickListener {
-            if(quantity>0){
-                quantity -= 1
-                binding.quantityTextView.setText(quantity.toString())
-            }
-        }*/
-    }
-
-
-    fun calculateBasket(){
-
-    }
 
    private fun registerToObserver() {
 

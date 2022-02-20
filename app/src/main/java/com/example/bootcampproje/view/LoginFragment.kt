@@ -68,7 +68,7 @@ class LoginFragment : Fragment() {
                     Snackbar.make(requireView(),it.message,Snackbar.LENGTH_SHORT).show()
                     Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
                     viewModel.clearResponse()
-                    //onDestroy()
+
                 }
 
             }

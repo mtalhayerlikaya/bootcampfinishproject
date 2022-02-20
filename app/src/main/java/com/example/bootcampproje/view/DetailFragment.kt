@@ -30,7 +30,7 @@ class DetailFragment : Fragment() {
     private var quantity:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("detail oncreate")
+
     }
 
     override fun onResume() {
@@ -52,7 +52,6 @@ class DetailFragment : Fragment() {
 
         handleLikeRequest()
         setLikedItemsVisible()
-        println("detail onViewCreated")
 
         return binding.root
     }
